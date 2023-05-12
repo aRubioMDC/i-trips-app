@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OperatorForm from '../Components/OperatorForm';
 import VehicleForm from '../Components/VehicleForm';
+import ClientForm from '../Components/ClientForm';
 
 const CatalogForms = () => {
 
@@ -27,6 +28,8 @@ const CatalogForms = () => {
                     return <OperatorForm/>;
                 case '2':
                     return <VehicleForm />;
+                case `3`:
+                    return <ClientForm/>    
                 default:
                     return null;
             }
