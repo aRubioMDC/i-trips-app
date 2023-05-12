@@ -1,13 +1,78 @@
-import React from 'react'
-import { Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Accordion } from 'react-bootstrap';
+import { newVehicle, getVehicle, getVehicles } from '../Services/vehicleService';
+import MaterialTable from 'material-table';
 import "../CSS/Forms.css";
 
 const VehicleForm = () => {
 
-    
+    const [dataTable, setDataTable] = useState();
+
+    const [vehicle, setVehicle] = useState({
+        vehiclePlates: '',
+        vehicleBranch: '',
+        vehicleModell: '',
+        vehicleModelYear: '',
+        vehicleStatus: '',
+    });
+
+    const handleSetVehicle = (state) => {
+        setVehicle(state);
+    };
+
+    const handleClickSaveBtn = async () => {
+
+        const vehicleObj = (
+            {
+                vehiclePlates: vehicle.vehiclePlates,
+                vehicleBranch: vehicle.vehicleBranch,
+                vehicleModell: vehicle.vehicleModell,
+                vehicleModelYear: vehicle.vehicleModelYear,
+                vehicleStatus: vehicle.vehicleStatus
+            }
+        );
+        
+        newVehicle(
+            vehicleObj,
+            (data) => {
+                SearchVehicle();
+            }, 
+            (error) => {
+                console.error(error);
+            },
+        );
+
+    };
+
+    const SearchVehicle = async (e) => {
+        getVehicles(
+            (data) => {
+                setDataTable(data);
+                console.log(data)
+            }, 
+            (error) => {
+                console.error(error);
+            },
+        );
+    }
 
     return (
         <div className="container-fluid p-3">
+            <Accordion defaultActiveKey="0" alwaysOpen>
+            <Accordion.Item eventKey="0" className='mb-3'>
+                <Accordion.Header>Buscar</Accordion.Header>
+                <Accordion.Body>
+                    <div className='row'>
+                        <div className='col-md-2 offset-md-10'>
+                            <Button variant='secondary' size='defautl' onClick={SearchVehicle}>Buscar</Button>
+                        </div>
+                    </div>
+                    tabla
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1" className='mb-3'>
+                <Accordion.Header>Formulario</Accordion.Header>
+                <Accordion.Body>
             <Form id='vehicle-form' >
                 <div class="row">
                     <div class="col-md-3">
@@ -23,8 +88,8 @@ const VehicleForm = () => {
                         <input class="form-control form-control-default" id='vehicleBranch' type="text" />
                     </div>
                     <div class="col-md-3">
-                        <label for="vehicleModel" class="form-label">Modelo de la Unidad</label>
-                        <input class="form-control form-control-default" id='vehicleModel' type="text" />
+                        <label for="vehicleModell" class="form-label">Modelo de la Unidad</label>
+                        <input class="form-control form-control-default" id='vehicleModell' type="text" />
                     </div>
                 </div>
                 <div class="row">
@@ -45,6 +110,9 @@ const VehicleForm = () => {
                     </div>
                 </div>
             </Form>
+                </Accordion.Body>
+            </Accordion.Item>
+            </Accordion>
         </div>
     );
 };
