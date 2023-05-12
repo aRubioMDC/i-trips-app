@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Accordion } from 'react-bootstrap';
-import { newOperator, getOperators } from '../Services/operatorService';
 import MaterialTable from 'material-table';
 import "../CSS/Forms.css";
 import { getClients, newClient } from '../Services/clientService';
