@@ -1,42 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Accordion } from 'react-bootstrap';
-import { newOperator, getOperators } from '../Services/operatorService';
 import MaterialTable from 'material-table';
 import "../CSS/Forms.css";
-import { getVehicles, newVehicle } from '../Services/vehicleService';
+import { getClients, newClient } from '../Services/clientService';
 
-const VehicleForm = () => {
+const ClientForm = () => {
 
     const [dataTable, setDataTable] = useState();
 
-    const [vehicle, setVehicle] = useState({
-        vehiclePlates: '',
-        VehicleBranch: '',
-        VehicleModell: '',
-        VehicleModelYear: '',
-        VehicleStatus: '',
+    const [client, setClient] = useState({
+        clientFGivenName: '',
+        clientSGivenName: '',
+        clientFLastName: '',
+        clientSLastName: '',
     });
 
-    const handleSetVehicle = (state) => {
-        setVehicle(state);
+    const handleSetClient = (state) => {
+        setClient(state);
     };
 
     const handleClickSaveBtn = async () => {
 
-        const vehicleObj = (
+        const clientObj = (
             {
-                vehiclePlates: vehicle.vehiclePlates,
-                VehicleBranch: vehicle.VehicleBranch,
-                VehicleModell: vehicle.VehicleModell,
-                VehicleModelYear: vehicle.VehicleModelYear,
-                VehicleStatus: vehicle.VehicleStatus
+                clientFGivenName: client.clientFGivenName,
+                clientSGivenName: client.clientSGivenName,
+                clientFLastName: client.clientFLastName,
+                clientSLastName: client.clientSLastName
             }
         );
         
-        newVehicle(
-            vehicleObj,
+        newClient(
+            clientObj,
             (data) => {
-                SearchVehicle();
+                SearchClient();
             }, 
             (error) => {
                 console.error(error);
@@ -45,8 +42,8 @@ const VehicleForm = () => {
 
     };
 
-    const SearchVehicle = async (e) => {
-        getVehicles(
+    const SearchClient = async (e) => {
+        getClients(
             (data) => {
                 setDataTable(data);
                 console.log(data)
@@ -65,7 +62,7 @@ const VehicleForm = () => {
                 <Accordion.Body>
                     <div className='row'>
                         <div className='col-md-2 offset-md-10'>
-                            <Button variant='secondary' size='defautl' onClick={SearchVehicle}>Buscar</Button>
+                            <Button variant='secondary' size='defautl' onClick={SearchClient}>Buscar</Button>
                         </div>
                     </div>
                     tabla
@@ -74,64 +71,53 @@ const VehicleForm = () => {
             <Accordion.Item eventKey="1" className='mb-3'>
                 <Accordion.Header>Formulario</Accordion.Header>
                 <Accordion.Body>
-                    <Form id='vehicle-form' >
+                    <Form id='client-form' >
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="vehicleId" class="form-label">Id de vehiculo</label>
-                                <input class="form-control form-control-default" id='vehiculoId' type="text" disabled />
+                                <label for="clientId" class="form-label">Id de Client</label>
+                                <input class="form-control form-control-default" id='operatorId' type="text" disabled />
                             </div>
                             <div class="col-md-3">
-                                <label for="vehiclePlates" class="form-label">Placas</label>
+                                <label for="clienteFisrtName" class="form-label">Primer Nombre</label>
                                 <input 
                                     class="form-control form-control-default" 
-                                    id='vehiclePlates' 
+                                    id='clienteFisrtName' 
                                     type="text" 
                                     placeholder="Escribe" 
-                                    value={vehicle.vehiclePlates}
-                                    onChange={(e) => { handleSetVehicle({ ...vehicle, vehiclePlates: e.target.value }) }}
+                                    value={client.clientFGivenName}
+                                    onChange={(e) => { handleSetClient({ ...client, clientFGivenName: e.target.value }) }}
                                 />
                             </div>
                             <div class="col-md-3">
-                                <label for="vehicleBranch" class="form-label">Marca</label>
+                                <label for="clientSecondName" class="form-label">Segundo Nombre</label>
                                 <input 
                                     class="form-control form-control-default" 
-                                    id='vehicleBranch' 
+                                    id='clientSecondName' 
                                     type="text" 
-                                    value={vehicle.VehicleBranch}
-                                    onChange={(e) => { handleSetVehicle({ ...vehicle, VehicleBranch: e.target.value }) }}
+                                    value={client.clientSGivenName}
+                                    onChange={(e) => { handleSetClient({ ...client, clientSGivenName: e.target.value }) }}
                                 />
                             </div>
                             <div class="col-md-3">
-                                <label for="vehicleModelYear" class="form-label">Año </label>
+                                <label for="clientFLastName" class="form-label">Primer Apellido</label>
                                 <input 
                                     class="form-control form-control-default" 
-                                    id='vehicleModelYear' 
+                                    id='clientFLastName' 
                                     type="text" 
-                                    value={vehicle.VehicleModelYear}
-                                    onChange={(e) => { handleSetVehicle({ ...vehicle, VehicleModelYear: e.target.value }) }}
+                                    value={client.clientFLastName}
+                                    onChange={(e) => { handleSetClient({ ...client, clientFLastName: e.target.value }) }}
                                 />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                            <label for="vehicleModell" class="form-label">Modelo</label>
+                                <label for="clientSLastName" class="form-label">Segundo Apellido</label>
                                 <input 
                                     class="form-control form-control-default" 
-                                    id='vehicleModell' 
+                                    id='clientSLastName' 
                                     type="text" 
-                                    value={vehicle.VehicleModell}
-                                    onChange={(e) => { handleSetVehicle({ ...vehicle, VehicleModell: e.target.value }) }}
-                                />
-                            </div>
-                            <div class="col-md-3">
-                                <label for="vehicleStatus" class="form-label">Status</label>
-                                <input 
-                                    class="form-control form-control-default" 
-                                    id='vehicleStatus' 
-                                    type="text" 
-                                    placeholder="Escribe" 
-                                    value={vehicle.VehicleStatus}
-                                    onChange={(e) => { handleSetVehicle({ ...vehicle, VehicleStatus: e.target.value }) }}
+                                    value={client.clientSLastName}
+                                    onChange={(e) => { handleSetClient({ ...client, clientSLastName: e.target.value }) }}
                                 />
                             </div>
                         </div>
@@ -151,4 +137,4 @@ const VehicleForm = () => {
     );
 };
 
-export default VehicleForm;
+export default ClientForm;
